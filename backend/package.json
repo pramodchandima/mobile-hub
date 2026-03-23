@@ -1,7 +1,7 @@
 {
-  "name": "clothing-store-backend",
+  "name": "mobile-hub-backend",
   "version": "1.0.0",
-  "description": "Backend for Online Clothing Store",
+  "description": "Backend for Mobile Hub - Premium Tech Shop",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

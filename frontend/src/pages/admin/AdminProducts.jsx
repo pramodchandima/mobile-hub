@@ -32,8 +32,16 @@ const AdminProducts = () => {
                 fetch(`${API_BASE}/admin/categories`, { headers })
             ]);
 
-            if (prodRes.ok) setProducts(await prodRes.json());
-            if (catRes.ok) setCategories(await catRes.json());
+            if (prodRes.ok) {
+                const prodData = await prodRes.json();
+                console.log("Products fetched:", prodData);
+                setProducts(Array.isArray(prodData) ? prodData : []);
+            }
+            if (catRes.ok) {
+                const catData = await catRes.json();
+                console.log("Categories fetched (in Products):", catData);
+                setCategories(Array.isArray(catData) ? catData : []);
+            }
         } catch (error) {
             toast.error("Failed to load data");
         } finally {
@@ -141,10 +149,10 @@ const AdminProducts = () => {
         setForm({ ...form, colors: newColors });
     };
 
-    const filteredProducts = products.filter(p =>
-        p.product_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (p.category_name && p.category_name.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
+    const filteredProducts = Array.isArray(products) ? products.filter(p =>
+        p?.product_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (p?.category_name && p?.category_name?.toLowerCase().includes(searchTerm.toLowerCase()))
+    ) : [];
 
     return (
         <div>

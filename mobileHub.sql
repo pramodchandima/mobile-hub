@@ -1,4 +1,4 @@
--- Database: clothing_store
+-- Database: mobileHub
 -- Compatible with MariaDB & TablePlus
 
 SET FOREIGN_KEY_CHECKS = 0;

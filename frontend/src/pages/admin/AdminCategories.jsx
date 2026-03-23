@@ -24,8 +24,13 @@ const AdminCategories = () => {
             const token = localStorage.getItem('adminToken');
             const headers = { 'Authorization': `Bearer ${token}` };
             const res = await fetch(`${API_BASE}/admin/categories`, { headers });
-            if (res.ok) setCategories(await res.json());
+            if (res.ok) {
+                const data = await res.json();
+                console.log("Categories fetched:", data);
+                setCategories(Array.isArray(data) ? data : []);
+            }
         } catch (error) {
+            console.error("Fetch Error:", error);
             toast.error("Failed to load categories");
         } finally {
             setIsLoading(false);
@@ -111,9 +116,9 @@ const AdminCategories = () => {
         setEditingItem(null);
     };
 
-    const filteredCategories = categories.filter(c =>
-        c.category_name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredCategories = Array.isArray(categories) ? categories.filter(c =>
+        c?.category_name?.toLowerCase().includes(searchTerm.toLowerCase())
+    ) : [];
 
     return (
         <div>
