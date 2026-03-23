@@ -1,122 +1,171 @@
-# Mobile Hub Website
+# 📱 Mobile Hub Website
 
 ## Description
 
-Mobile Hub is a full-stack mobile shop website with a frontend and backend.  
-It allows users to browse and buy mobile devices and accessories, while admins can manage products, orders, and users. The website is responsive and works on both desktop and mobile devices.
+**Mobile Hub** is a premium, full-stack e-commerce platform for mobile devices and accessories. It features a stunning glassmorphic UI, a robust Node.js backend, and a comprehensive administrative portal for complete store management.
 
 ---
 
-## Technologies
+## 📋 Table of Contents
 
-- **Frontend:** React, Tailwind CSS
-- **Backend:** Node.js, Express
-- **Database:** MySQL
-- **Other:** Axios for API requests, JWT for authentication
-
----
-
-## Features
-
-### User Features
-
-- Browse products by category
-- View product details
-- Add products to cart
-- Place orders
-- User authentication (Sign Up / Login)
-
-### Admin Features
-
-- Manage products (Add / Edit / Delete)
-- Manage orders
-- View customer messages
-- Admin dashboard for analytics
-
-### General
-
-- Responsive design
-- Secure authentication
-- Organized folder structure
+- [Technologies](#technologies)
+- [Features](#features)
+- [Project Structure](#project-structure)
+- [Installation & Running Locally](#installation--running-locally)
+- [Environment Variables](#environment-variables)
+- [Admin Access](#admin-access)
+- [Troubleshooting](#troubleshooting)
+- [Author](#author)
 
 ---
 
-## Project Structure
+## 🛠️ Technologies
 
+- **Frontend:** React, Tailwind CSS, Lucide Icons
+- **Backend:** Node.js, Express.js
+- **Database:** MySQL (InnoDB)
+- **Authentication:** JSON Web Tokens (JWT) & bcrypt
+- **Media:** Multer for image/video uploads
+
+---
+
+## ✨ Features
+
+### 👤 User Features
+
+- **Premium UI:** Modern, responsive design with glassmorphism and animations.
+- **Product Discovery:** Browse by category, search, and view detailed specifications.
+- **Interactive:** Add to cart and seamless contact forms.
+
+### 👨‍💼 Admin Features
+
+- **Dashboard:** Real-time analytics and store overview.
+- **Product Management:** Full CRUD (Create, Read, Update, Delete) for products and variants.
+- **Category Management:** Organze your store with custom categories and images.
+- **Dynamic Content:** Update home sections, hero carousels, and promotional videos directly from the panel.
+
+---
+
+## 📁 Project Structure
+
+```text
 Mobile Hub/
-├─ backend/ # Node.js backend
-│ ├─ src/
-│ │ ├─ controllers/ # Backend logic
-│ │ ├─ middleware/ # Auth, uploads, etc.
-│ │ ├─ routes/ # API endpoints
-│ │ └─ utils/ # Helper functions
-│ ├─ scripts/ # DB migration / testing scripts
-│ ├─ server.js # Entry point
-│ └─ package.json
-├─ frontend/ # React frontend
-│ ├─ src/
-│ │ ├─ components/ # Reusable components
-│ │ ├─ pages/ # Pages like Home, Shop, Admin
-│ │ ├─ config/ # API config
-│ │ └─ styles/ # CSS files
-│ ├─ public/ # Static assets
-│ └─ package.json
-├─ Images/ # Product images
-├─ mobileHub.sql # Database script
-├─ .gitignore
-├─ README.md
-├─ package.json
-└─ tailwind.config.js
+├── backend/                # Node.js backend API
+│   ├── src/
+│   │   ├── config/         # DB and Env configurations
+│   │   ├── controllers/    # API Request handlers
+│   │   ├── middleware/     # Auth and Upload filters
+│   │   ├── routes/         # Express routes
+│   └── server.js           # Server entry point
+├── frontend/               # React frontend application
+│   ├── src/
+│   │   ├── components/     # UI Components
+│   │   ├── pages/          # Full page views
+│   │   └── config/         # API Base configuration
+├── mobileHub.sql           # Database schema & initial data
+├── .gitignore              # Git ignore rules
+└── README.md               # Documentation
+```
 
 ---
 
-## Installation & Running Locally
+## 💻 Installation & Running Locally
 
-### Backend
+### Prerequisites
 
-```bash
-cd backend
-npm install
-npm start
-Backend runs on http://localhost:5000 (default)
-Frontend
-cd frontend
-npm install
-npm start
-Frontend runs on http://localhost:3000
+- Node.js (v16+)
+- MySQL Server
 
-Make sure backend is running first to allow frontend API calls.
+### 1. Database Setup
 
-Deployment
-Frontend (Vercel / Netlify)
-Push your frontend folder to GitHub
-Sign in to Vercel
- or Netlify
-Create a new project → Import from GitHub
-Build command: npm run build
-Output directory: build
-Deploy → Copy the live URL
-Backend (Render / Railway)
-Push your backend folder to GitHub
-Sign in to Render
- or Railway
-Create a new Web Service → Connect GitHub repo
-Start command: npm install && npm start
-Set environment variables (DB credentials, JWT secret, etc.)
-Deploy → Copy the live backend URL
-Connect Frontend → Backend
-In frontend/src/config/api.js, replace local API URL with your deployed backend URL
-export const API_URL = "https://your-backend-url.com/api";
-Notes
-Large media files (*.mp4) and backup files (*.bak) are ignored via .gitignore
-Keep sensitive files like .env out of GitHub
-Use .gitignore to prevent unnecessary files from being committed
-Author
+1. Create a new database in MySQL:
+   ```sql
+   CREATE DATABASE mobileHub;
+   ```
+2. Import the schema:
+   ```bash
+   mysql -u root -p mobileHub < mobileHub.sql
+   ```
 
-Pramod Chandima
-Full-stack developer | Student | Tech enthusiast
+### 2. Backend Setup
 
-License
+1. Navigate to `/backend` and install dependencies:
+   ```bash
+   npm install
+   ```
+2. Configure your `.env` file (see [Environment Variables](#environment-variables)).
+3. Start the server:
+   ```bash
+   npm start
+   ```
 
-This project is for learning and personal use. No commercial use without permission.
+### 3. Frontend Setup
+
+1. Navigate to `/frontend` and install dependencies:
+   ```bash
+   npm install
+   ```
+2. Start the development server:
+   ```bash
+   npm start
+   ```
+
+---
+
+## 🔐 Environment Variables
+
+Create a `.env` file in the `backend/` directory:
+
+```env
+PORT=5000
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=your_mysql_password
+DB_NAME=mobileHub
+JWT_SECRET=your_secure_random_string
+
+# Admin Setup (Defaults)
+ADMIN_USERNAME=admin123
+ADMIN_PASSWORD=1111
 ```
+
+---
+
+## 🔑 Admin Access
+
+- **Admin Portal:** `http://localhost:3000/shop-admin-portal-2002`
+- **Default Credentials:**
+  - **Username:** `admin123`
+  - **Password:** `1111`
+
+> [!TIP]
+> If you ever recreate the database and need to quickly reset the admin account, ensure the backend is running and visit:
+> `http://localhost:5000/api/setup-admin`
+
+---
+
+## 🐛 Troubleshooting
+
+| Issue                          | Solution                                                                        |
+| :----------------------------- | :------------------------------------------------------------------------------ |
+| **Database Connection Error**  | Verify MySQL is running and credentials in `.env` match.                        |
+| **Broken Images**              | Ensure the `backend/uploads` folder exists and has permissions.                 |
+| **Invalid Token Error**        | Log out of the Admin Panel and log back in to refresh your session.             |
+| **White Screen on Categories** | Ensure the backend is running; the frontend needs the API to render categories. |
+
+---
+
+## 👨‍💻 Author
+
+**Pramod Chandima**
+_Full-stack Developer | Tech Enthusiast_
+
+---
+
+## 📄 License
+
+This project is for personal use and learning. All rights reserved.
+
+---
+
+_Happy Coding! 🚀_
