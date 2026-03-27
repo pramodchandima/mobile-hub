@@ -103,7 +103,7 @@ const Footer = () => {
             </div>
           </div>
 
-          <div>
+          <div className="md:justify-self-end">
             <h4 className="text-white font-black uppercase tracking-widest text-sm mb-8">
               Navigation
             </h4>
@@ -132,7 +132,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div>
+          <div className="md:justify-self-end">
             <h4 className="text-white font-black uppercase tracking-widest text-sm mb-8">
               Intelligence
             </h4>
