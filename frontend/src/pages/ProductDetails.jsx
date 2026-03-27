@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Check, Minus, Plus, ShoppingBag, Truck, ShieldCheck, Share2, Star } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import toast from 'react-hot-toast';
 import { API_BASE, getImageUrl } from '../config/api';
 import PublicLayout from '../components/layout/PublicLayout';
+import AnimatedSection from '../components/common/AnimatedSection';
 
 const ProductDetails = () => {
     const { id } = useParams();
@@ -165,16 +167,24 @@ _Transmitted via Mobile hub Terminal_`;
     return (
         <PublicLayout>
             <div className="max-w-[1400px] mx-auto px-4 py-8 min-h-screen relative">
-                <button
+                <motion.button
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5 }}
                     onClick={() => navigate(-1)}
                     className="mb-10 flex items-center gap-3 text-gray-400 hover:text-neon-cyan transition-all group font-bold uppercase tracking-widest text-sm"
                 >
                     <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" /> Back to Inventory
-                </button>
+                </motion.button>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
                     {/* Image Section */}
-                    <div className="glass-card rounded-lg overflow-hidden relative group aspect-square flex items-center justify-center p-12">
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.8 }}
+                        className="glass-card rounded-lg overflow-hidden relative group aspect-square flex items-center justify-center p-12"
+                    >
                         <div className="absolute inset-0 bg-gradient-to-br from-neon-cyan/5 via-transparent to-neon-purple/5"></div>
                         <img
                             src={getImageUrl(product.image_path)}
@@ -188,10 +198,15 @@ _Transmitted via Mobile hub Terminal_`;
                                 Offline / Out of Stock
                             </div>
                         )}
-                    </div>
+                    </motion.div>
 
                     {/* Details Section */}
-                    <div className="flex flex-col">
+                    <motion.div
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.8, delay: 0.2 }}
+                        className="flex flex-col"
+                    >
                         <div className="mb-10">
                             <h2 className="text-neon-cyan font-black tracking-[0.3em] uppercase text-xs mb-4">
                                 {product.category_name || 'Classified Unit'}
@@ -253,72 +268,80 @@ _Transmitted via Mobile hub Terminal_`;
                                 <ShieldCheck size={20} className="text-neon-purple" /> Authentic Core
                             </div>
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
 
 
                 {/* Order Modal */}
-                {showOrderModal && (
-                    <div className="fixed inset-0 bg-dark-900/90 backdrop-blur-2xl z-50 flex items-center justify-center p-6">
-                        <div className="glass-card w-full max-w-xl p-12 rounded-lg relative animate-in fade-in zoom-in duration-500 border-neon-cyan/20">
-                            <button
-                                onClick={() => setShowOrderModal(false)}
-                                className="absolute top-8 right-8 text-gray-400 hover:text-neon-cyan transition-colors"
+                <AnimatePresence>
+                    {showOrderModal && (
+                        <div className="fixed inset-0 bg-dark-900/90 backdrop-blur-2xl z-50 flex items-center justify-center p-6">
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                                animate={{ opacity: 1, scale: 1, y: 0 }}
+                                exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                                transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                                className="glass-card w-full max-w-xl p-12 rounded-lg relative border-neon-cyan/20"
                             >
-                                <Plus size={32} className="rotate-45" />
-                            </button>
-
-                            <h2 className="text-4xl font-black text-white mb-2 uppercase tracking-tighter">Enter Identity</h2>
-                            <p className="text-gray-400 font-medium mb-10">Provide your uplink coordinates for delivery.</p>
-
-                            <form onSubmit={handleConfirmOrder} className="space-y-6">
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                    <div className="space-y-2">
-                                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-4">Full Identity</label>
-                                        <input
-                                            type="text"
-                                            required
-                                            className="w-full bg-dark-900 border border-white/10 rounded-lg px-6 py-4 outline-none focus:border-neon-cyan focus:ring-4 focus:ring-neon-cyan/10 transition-all text-white font-medium"
-                                            value={orderDetails.name}
-                                            onChange={(e) => setOrderDetails({ ...orderDetails, name: e.target.value })}
-                                            placeholder="Your Name"
-                                        />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-4">Comm Link (Phone)</label>
-                                        <input
-                                            type="tel"
-                                            required
-                                            className="w-full bg-dark-900 border border-white/10 rounded-lg px-6 py-4 outline-none focus:border-neon-cyan focus:ring-4 focus:ring-neon-cyan/10 transition-all text-white font-medium"
-                                            value={orderDetails.phone}
-                                            onChange={(e) => setOrderDetails({ ...orderDetails, phone: e.target.value })}
-                                            placeholder="077xxxxxxx"
-                                        />
-                                    </div>
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-4">Delivery Coordinates (Address)</label>
-                                    <textarea
-                                        required
-                                        rows="3"
-                                        className="w-full bg-dark-900 border border-white/10 rounded-lg px-6 py-4 outline-none focus:border-neon-cyan focus:ring-4 focus:ring-neon-cyan/10 transition-all text-white font-medium resize-none text-sm"
-                                        value={orderDetails.address}
-                                        onChange={(e) => setOrderDetails({ ...orderDetails, address: e.target.value })}
-                                        placeholder="Full delivery address"
-                                    ></textarea>
-                                </div>
-
                                 <button
-                                    type="submit"
-                                    disabled={isSubmitting}
-                                    className="w-full h-20 rounded-lg font-black text-xl uppercase tracking-widest bg-gradient-to-r from-neon-cyan to-neon-purple text-dark-900 hover:shadow-[0_0_40px_rgba(34,211,238,0.5)] transition-all disabled:opacity-50 mt-4"
+                                    onClick={() => setShowOrderModal(false)}
+                                    className="absolute top-8 right-8 text-gray-400 hover:text-neon-cyan transition-colors"
                                 >
-                                    {isSubmitting ? 'Transmitting...' : 'Initialize Uplink Order'}
+                                    <Plus size={32} className="rotate-45" />
                                 </button>
-                            </form>
+
+                                <h2 className="text-4xl font-black text-white mb-2 uppercase tracking-tighter">Enter Identity</h2>
+                                <p className="text-gray-400 font-medium mb-10">Provide your uplink coordinates for delivery.</p>
+
+                                <form onSubmit={handleConfirmOrder} className="space-y-6">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-4">Full Identity</label>
+                                            <input
+                                                type="text"
+                                                required
+                                                className="w-full bg-dark-900 border border-white/10 rounded-lg px-6 py-4 outline-none focus:border-neon-cyan focus:ring-4 focus:ring-neon-cyan/10 transition-all text-white font-medium"
+                                                value={orderDetails.name}
+                                                onChange={(e) => setOrderDetails({ ...orderDetails, name: e.target.value })}
+                                                placeholder="Your Name"
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-4">Comm Link (Phone)</label>
+                                            <input
+                                                type="tel"
+                                                required
+                                                className="w-full bg-dark-900 border border-white/10 rounded-lg px-6 py-4 outline-none focus:border-neon-cyan focus:ring-4 focus:ring-neon-cyan/10 transition-all text-white font-medium"
+                                                value={orderDetails.phone}
+                                                onChange={(e) => setOrderDetails({ ...orderDetails, phone: e.target.value })}
+                                                placeholder="077xxxxxxx"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 ml-4">Delivery Coordinates (Address)</label>
+                                        <textarea
+                                            required
+                                            rows="3"
+                                            className="w-full bg-dark-900 border border-white/10 rounded-lg px-6 py-4 outline-none focus:border-neon-cyan focus:ring-4 focus:ring-neon-cyan/10 transition-all text-white font-medium resize-none text-sm"
+                                            value={orderDetails.address}
+                                            onChange={(e) => setOrderDetails({ ...orderDetails, address: e.target.value })}
+                                            placeholder="Full delivery address"
+                                        ></textarea>
+                                    </div>
+
+                                    <button
+                                        type="submit"
+                                        disabled={isSubmitting}
+                                        className="w-full h-20 rounded-lg font-black text-xl uppercase tracking-widest bg-gradient-to-r from-neon-cyan to-neon-purple text-dark-900 hover:shadow-[0_0_40px_rgba(34,211,238,0.5)] transition-all disabled:opacity-50 mt-4"
+                                    >
+                                        {isSubmitting ? 'Transmitting...' : 'Initialize Uplink Order'}
+                                    </button>
+                                </form>
+                            </motion.div>
                         </div>
-                    </div>
-                )}
+                    )}
+                </AnimatePresence>
             </div>
         </PublicLayout >
     );

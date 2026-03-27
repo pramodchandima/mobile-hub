@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import { motion } from 'framer-motion';
 import PublicLayout from '../components/layout/PublicLayout';
 
 const FAQSection = () => {
@@ -103,7 +104,7 @@ const PolicyPage = ({ type }) => {
         terms: {
             title: "Terms of Service",
             body: (
-                <div className="space-y-4 text-gray-600 leading-relaxed text-lg">
+                <div className="space-y-4 text-gray-400 leading-relaxed text-lg">
                     <p>By visiting our site and/ or purchasing something from us, you engage in our "Service" and agree to be bound by the following terms and conditions.</p>
                     <p>We reserve the right to update, change or replace any part of these Terms of Service by posting updates and/or changes to our website. It is your responsibility to check this page periodically for changes.</p>
                     <p>The headings used in this agreement are included for convenience only and will not limit or otherwise affect these Terms.</p>
@@ -123,14 +124,19 @@ const PolicyPage = ({ type }) => {
                     <div className="absolute bottom-0 left-0 w-96 h-96 bg-neon-cyan/5 rounded-full blur-[120px]"></div>
                 </div>
                 <div className="max-w-4xl mx-auto px-4">
-                    <div className="glass-card p-8 md:p-14 rounded-[3rem] shadow-2xl relative z-10 border-white/5">
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+                        className="glass-card p-8 md:p-14 rounded-[3rem] shadow-2xl relative z-10 border-white/5"
+                    >
                         <h1 className="text-4xl md:text-5xl font-black text-white mb-10 border-b border-white/10 pb-6 uppercase tracking-tighter shadow-neon-cyan/5">
                             {pageContent.title}
                         </h1>
                         <div className="prose prose-blue max-w-none">
                             {pageContent.body}
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
             </div>
         </PublicLayout>

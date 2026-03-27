@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, ShieldCheck, Settings, Star } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { API_BASE, getImageUrl } from '../config/api';
 import PublicLayout from '../components/layout/PublicLayout';
+import AnimatedSection from '../components/common/AnimatedSection';
 
 const Home = () => {
     const navigate = useNavigate();
@@ -85,9 +87,11 @@ const Home = () => {
     useEffect(() => {
         if (settings.promo_video && videoRef.current) {
             const playVideo = () => {
-                videoRef.current.play().catch(error => {
-                    console.warn("Video autoplay failed, waiting for interaction:", error);
-                });
+                if (videoRef.current) {
+                    videoRef.current.play().catch(error => {
+                        console.warn("Video autoplay failed, waiting for interaction:", error);
+                    });
+                }
             };
             playVideo();
             // Also try on first click/interaction if it fails
@@ -118,15 +122,31 @@ const Home = () => {
                     )}
 
                     <div className="max-w-[1400px] mx-auto px-4 text-center relative z-10 w-full">
-                        <h1 className="text-6xl md:text-8xl font-black mb-8 leading-[1.1] tracking-tighter section-reveal">
+                        <motion.h1
+                            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+                            className="text-6xl md:text-8xl font-black mb-8 leading-[1.1] tracking-tighter"
+                        >
                             <span className="neon-text-gradient animate-pulse-glow block">The Future</span>
                             <span className="text-white drop-shadow-lg">In Your Hands.</span>
-                        </h1>
-                        <p className="text-xl md:text-2xl mb-12 text-gray-300 max-w-3xl mx-auto font-medium leading-relaxed drop-shadow-md">
-                            Experience the next generation of mobile technology. Premium devices, cutting-edge performance, and seamless connectivity.
-                        </p>
+                        </motion.h1>
 
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+                        <motion.p
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+                            className="text-xl md:text-2xl mb-12 text-gray-300 max-w-3xl mx-auto font-medium leading-relaxed drop-shadow-md"
+                        >
+                            Experience the next generation of mobile technology. Premium devices, cutting-edge performance, and seamless connectivity.
+                        </motion.p>
+
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+                            className="flex flex-col sm:flex-row items-center justify-center gap-6"
+                        >
                             <button
                                 onClick={() => navigate("/shop")}
                                 className="group relative bg-gradient-to-r from-neon-cyan to-neon-blue text-dark-900 px-12 py-5 rounded-full font-bold text-xl hover:shadow-[0_0_30px_rgba(34,211,238,0.4)] transition-all duration-500 hover:scale-105 active:scale-95"
@@ -141,13 +161,13 @@ const Home = () => {
                             >
                                 Tech Support
                             </button>
-                        </div>
+                        </motion.div>
                     </div>
                 </div>
 
                 {/* 1.5 PROMO VIDEO SECTION */}
                 {settings.promo_video && (
-                    <div className="relative w-full overflow-hidden bg-black">
+                    <div className="relative w-full aspect-video md:aspect-[21/9] overflow-hidden bg-black section-reveal">
                         <video
                             ref={videoRef}
                             src={getImageUrl(settings.promo_video)}
@@ -156,38 +176,41 @@ const Home = () => {
                             muted
                             playsInline
                             preload="auto"
-                            className="w-full h-auto object-cover"
+                            className="w-full h-full object-cover"
                         ></video>
                     </div>
                 )}
 
                 {/* 2. FEATURES */}
-                <div className="py-8 relative overflow-hidden section-reveal border-b border-white/5 bg-dark-900/50 backdrop-blur-sm">
+                <AnimatedSection className="py-8 relative overflow-hidden border-b border-white/5 bg-dark-900/50 backdrop-blur-sm">
                     <div className="max-w-[1400px] mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-10 relative z-10">
                         <FeatureCard
+                            index={0}
                             icon={Search}
                             title="Expert Product Guidance"
                             text="Get help from our team to choose the best device for your needs."
                             color="cyan"
                         />
                         <FeatureCard
+                            index={1}
                             icon={ShieldCheck}
                             title="Certified Warranty"
                             text="Official brand warranty and expert technical support."
                             color="purple"
                         />
                         <FeatureCard
+                            index={2}
                             icon={Settings}
                             title="Expert Technical Support"
                             text="Our skilled team is ready to help you choose and use your devices with confidence."
                             color="blue"
                         />
                     </div>
-                </div>
+                </AnimatedSection>
 
-                {/* 3. DYNAMIC SECTIONS */}
-                {sections.map((section) => (
-                    <div key={section.section_id} className="py-4 section-reveal">
+                {/*  dynamic sections */}
+                {sections.map((section, secIdx) => (
+                    <AnimatedSection key={section.section_id} className="py-4">
                         <div className="max-w-[1400px] mx-auto px-4">
                             <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-6">
                                 <h3 className="text-4xl font-black tracking-tight text-white capitalize">
@@ -203,9 +226,13 @@ const Home = () => {
 
                             {section.products && section.products.length > 0 ? (
                                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-                                    {section.products.map((product) => (
-                                        <div
+                                    {section.products.map((product, idx) => (
+                                        <motion.div
                                             key={product.product_id}
+                                            initial={{ opacity: 0, y: 20 }}
+                                            whileInView={{ opacity: 1, y: 0 }}
+                                            viewport={{ once: true }}
+                                            transition={{ duration: 0.5, delay: idx * 0.1 }}
                                             onClick={() => navigate(`/product/${product.product_id}`)}
                                             className="group glass-card rounded-2xl overflow-hidden cursor-pointer p-2 transition-all duration-500 hover:-translate-y-4 shadow-xl hover:shadow-neon-cyan/10"
                                         >
@@ -228,7 +255,7 @@ const Home = () => {
                                                     <span className="text-neon-cyan font-black text-sm">Rs. {Number(product.base_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </motion.div>
                                     ))}
                                 </div>
                             ) : (
@@ -237,12 +264,12 @@ const Home = () => {
                                 </div>
                             )}
                         </div>
-                    </div>
+                    </AnimatedSection>
                 ))}
 
                 {/* 4. CUSTOMER REVIEWS */}
                 {reviews.length > 0 && (
-                    <div className="py-12 relative overflow-hidden section-reveal border-t border-white/5 bg-dark-900/30">
+                    <AnimatedSection className="py-12 relative overflow-hidden border-t border-white/5 bg-dark-900/30">
                         <div className="absolute top-0 left-1/4 w-64 h-64 bg-neon-cyan/5 rounded-full blur-[120px] pointer-events-none"></div>
                         <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-neon-purple/5 rounded-full blur-[120px] pointer-events-none"></div>
 
@@ -255,8 +282,15 @@ const Home = () => {
                             </div>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {reviews.slice(0, 8).map((review) => (
-                                    <div key={review.review_id} className="glass-card p-6 rounded-2xl flex flex-col h-full hover:-translate-y-2 transition-all duration-500 border-white/5 group relative">
+                                {reviews.slice(0, 8).map((review, idx) => (
+                                    <motion.div
+                                        key={review.review_id}
+                                        initial={{ opacity: 0, scale: 0.95 }}
+                                        whileInView={{ opacity: 1, scale: 1 }}
+                                        viewport={{ once: true }}
+                                        transition={{ duration: 0.5, delay: idx * 0.05 }}
+                                        className="glass-card p-6 rounded-2xl flex flex-col h-full hover:-translate-y-2 transition-all duration-500 border-white/5 group relative"
+                                    >
                                         {/* Google Icon in corner */}
                                         <div className="absolute top-4 right-4 bg-white/10 p-1 rounded-md border border-white/5 backdrop-blur-sm group-hover:bg-white/20 transition-all">
                                             <img src="https://www.google.com/favicon.ico" alt="Google" className="w-3.5 h-3.5 object-contain opacity-80 group-hover:opacity-100" />
@@ -278,18 +312,18 @@ const Home = () => {
                                         <p className="text-gray-400 text-sm leading-relaxed italic mt-2">
                                             "{review.comment}"
                                         </p>
-                                    </div>
+                                    </motion.div>
                                 ))}
                             </div>
                         </div>
-                    </div>
+                    </AnimatedSection>
                 )}
             </div>
         </PublicLayout>
     );
 };
 
-const FeatureCard = ({ icon: Icon, title, text, color }) => {
+const FeatureCard = ({ icon: Icon, title, text, color, index }) => {
     const colorClasses = {
         cyan: "text-neon-cyan border-neon-cyan/20 bg-neon-cyan/5",
         purple: "text-neon-purple border-neon-purple/20 bg-neon-purple/5",
@@ -297,7 +331,13 @@ const FeatureCard = ({ icon: Icon, title, text, color }) => {
     };
 
     return (
-        <div className="glass-card flex flex-col items-center text-center p-8 rounded-xl hover:-translate-y-2 transition-all duration-500 group relative overflow-hidden">
+        <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: index * 0.1 }}
+            className="glass-card flex flex-col items-center text-center p-8 rounded-xl hover:-translate-y-2 transition-all duration-500 group relative overflow-hidden"
+        >
             {/* Background glow on hover */}
             <div className={`absolute top-0 right-0 w-24 h-24 blur-[60px] opacity-0 group-hover:opacity-30 transition-opacity bg-neon-${color}`}></div>
 
@@ -306,7 +346,7 @@ const FeatureCard = ({ icon: Icon, title, text, color }) => {
             </div>
             <h4 className="font-black text-2xl text-white mb-4 tracking-tight">{title}</h4>
             <p className="text-gray-400 font-medium leading-relaxed">{text}</p>
-        </div>
+        </motion.div>
     );
 };
 

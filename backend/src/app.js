@@ -1,6 +1,10 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const helmet = require('helmet');
+const compression = require('compression');
+const morgan = require('morgan');
+const rateLimit = require('express-rate-limit');
 const config = require('./config/env');
 
 const authRoutes = require('./routes/authRoutes');
@@ -13,14 +17,23 @@ const { getFullUrl } = require('./utils/helpers');
 
 const app = express();
 
-// === MIDDLEWARE ===
+// === SECURITY & PERFORMANCE MIDDLEWARE ===
+app.use(helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
+app.use(compression()); // Gzip/Brotli compression
+app.use(morgan('dev')); // Standard request logging
+
+// Rate limiting to prevent brute-force
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 200, // limit each IP to 100 requests per windowMs
+    message: { success: false, error: "Too many requests, please try again later." }
+});
+app.use('/api/', limiter);
+
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
-
-app.use((req, res, next) => {
-    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
-    next();
-});
 
 // === CORS CONFIGURATION ===
 app.use(cors({

@@ -1,6 +1,8 @@
 import React from 'react';
-import PublicLayout from '../components/layout/PublicLayout';
 import { Facebook, Instagram, MessageCircle, ArrowRight, Target, Eye, ShieldCheck, Heart, Award, Users, MapPin, Phone, Mail } from 'lucide-react';
+import { motion } from 'framer-motion';
+import PublicLayout from '../components/layout/PublicLayout';
+import AnimatedSection from '../components/common/AnimatedSection';
 
 const About = () => {
     const socialLinks = {
@@ -21,19 +23,28 @@ const About = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-dark-950 via-dark-950/40 to-transparent"></div>
 
                 <div className="absolute inset-0 flex flex-col justify-end pb-32 px-1 max-w-[1400px] mx-auto">
-                    <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter uppercase mb-4 animate-in slide-in-from-left duration-1000">
+                    <motion.h1
+                        initial={{ opacity: 0, x: -100 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
+                        className="text-5xl md:text-7xl font-black text-white tracking-tighter uppercase mb-4"
+                    >
                         Our <span className="neon-text-gradient">Story</span>
-                    </h1>
-                    <p className="text-lg md:text-xl text-white max-w-3xl font-medium leading-relaxed drop-shadow-lg animate-in slide-in-from-left delay-200 duration-1000">
+                    </motion.h1>
+                    <motion.p
+                        initial={{ opacity: 0, x: -100 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 1, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+                        className="text-lg md:text-xl text-white max-w-3xl font-medium leading-relaxed drop-shadow-lg"
+                    >
                         Founded with a passion for mobile technology, Mobile Hub has grown into a trusted destination for smartphones and accessories in Sri Lanka.
-                    </p>
+                    </motion.p>
                 </div>
             </div>
 
             <div className="bg-dark-950 text-white pb-16">
                 <div className="max-w-[1400px] mx-auto px-4">
-
-                    <div className="py-16 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                    <AnimatedSection className="py-16 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                         <div className="space-y-8">
                             <h2 className="text-4xl font-black uppercase tracking-tighter flex items-center gap-4">
                                 <span className="w-12 h-1 bg-neon-cyan rounded-full"></span>
@@ -54,9 +65,9 @@ const About = () => {
                                 To deliver high-quality mobile products and services while building long-term relationships with our customers through trust, innovation, and excellent service. We aim to make modern technology accessible and affordable for everyone.
                             </p>
                         </div>
-                    </div>
+                    </AnimatedSection>
 
-                    <div className="py-16 border-y border-white/5 relative overflow-hidden">
+                    <AnimatedSection className="py-16 border-y border-white/5 relative overflow-hidden">
                         {/* Background Animation Elements */}
                         <div className="absolute top-1/4 -left-20 w-80 h-80 bg-neon-cyan/5 rounded-full blur-[100px] animate-pulse"></div>
                         <div className="absolute bottom-1/4 -right-20 w-80 h-80 bg-neon-purple/5 rounded-full blur-[100px] animate-pulse delay-1000"></div>
@@ -70,7 +81,15 @@ const About = () => {
                                     { title: "Repairs", desc: "Expert technical support & service", num: "03" },
                                     { title: "Gadgets", desc: "Latest smart devices & technology", num: "04" }
                                 ].map((item, i) => (
-                                    <div key={i} className="glass-card p-10 rounded-2xl hover:-translate-y-2 transition-all duration-500 border-white/5 group relative overflow-hidden">
+                                    <motion.div
+                                        key={i}
+                                        whileHover={{ y: -10 }}
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ duration: 0.5, delay: i * 0.1 }}
+                                        className="glass-card p-10 rounded-2xl transition-all duration-500 border-white/5 group relative overflow-hidden"
+                                    >
                                         <div className="absolute -top-4 -right-2 text-8xl font-black text-white/5 group-hover:text-neon-cyan/10 transition-colors pointer-events-none">
                                             {item.num}
                                         </div>
@@ -78,16 +97,16 @@ const About = () => {
                                             <h4 className="text-2xl font-black uppercase mb-4 tracking-tighter group-hover:text-neon-cyan transition-colors">{item.title}</h4>
                                             <p className="text-gray-500 text-sm font-medium leading-relaxed">{item.desc}</p>
                                         </div>
-                                    </div>
+                                    </motion.div>
                                 ))}
                             </div>
                         </div>
-                    </div>
+                    </AnimatedSection>
 
                     {/* WHY CHOOSE US */}
                     <div className="py-16">
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
-                            <div className="space-y-12">
+                            <AnimatedSection direction="right" className="space-y-12">
                                 <h2 className="text-4xl font-black uppercase tracking-tighter">Why Choose Us</h2>
                                 <div className="space-y-8">
                                     {[
@@ -96,7 +115,14 @@ const About = () => {
                                         { t: "Affordable Prices", d: "Competitive pricing with great value for money.", i: Award },
                                         { t: "Expert Support", d: "Friendly and knowledgeable staff ready to help you choose the right product.", i: ShieldCheck }
                                     ].map((item, i) => (
-                                        <div key={i} className="flex gap-6 group">
+                                        <motion.div
+                                            key={i}
+                                            initial={{ opacity: 0, x: -20 }}
+                                            whileInView={{ opacity: 1, x: 0 }}
+                                            viewport={{ once: true }}
+                                            transition={{ duration: 0.5, delay: i * 0.1 }}
+                                            className="flex gap-6 group"
+                                        >
                                             <div className="w-12 h-12 bg-neon-cyan/10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-neon-cyan/20 transition-all">
                                                 <item.i className="text-neon-cyan w-6 h-6" />
                                             </div>
@@ -104,11 +130,11 @@ const About = () => {
                                                 <h4 className="text-xl font-bold mb-2">{item.t}</h4>
                                                 <p className="text-gray-500 font-medium">{item.d}</p>
                                             </div>
-                                        </div>
+                                        </motion.div>
                                     ))}
                                 </div>
-                            </div>
-                            <div className="relative">
+                            </AnimatedSection>
+                            <AnimatedSection direction="left" className="relative">
                                 <div className="glass-card p-12 rounded-3xl border-white/5 h-full flex flex-col justify-center relative z-10">
                                     <Eye className="text-neon-purple w-20 h-20 mb-8 opacity-20" />
                                     <h3 className="text-3xl font-black uppercase mb-6 tracking-tighter">Our Vision</h3>
@@ -118,12 +144,12 @@ const About = () => {
                                 </div>
                                 <div className="absolute -top-10 -right-10 w-64 h-64 bg-neon-purple/10 blur-[100px] pointer-events-none"></div>
                                 <div className="absolute -bottom-10 -left-10 w-64 h-64 bg-neon-cyan/10 blur-[100px] pointer-events-none"></div>
-                            </div>
+                            </AnimatedSection>
                         </div>
                     </div>
 
                     {/* OUR JOURNEY */}
-                    <div className="py-16 bg-dark-900/50 rounded-[3rem] p-12 md:p-20 border border-white/5">
+                    <AnimatedSection className="py-16 bg-dark-900/50 rounded-[3rem] p-12 md:p-20 border border-white/5">
                         <h2 className="text-4xl font-black uppercase tracking-tighter mb-16 text-center">Our Journey</h2>
                         <div className="relative space-y-12 before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-white/5 before:to-transparent">
                             {[
@@ -131,7 +157,14 @@ const About = () => {
                                 { t: "Growth", d: "Expanded product range and built a loyal customer base.", date: "Building Trust" },
                                 { t: "Today", d: "A trusted mobile shop known for quality, service, and reliability.", date: "Present Day" }
                             ].map((step, i) => (
-                                <div key={i} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                                <motion.div
+                                    key={i}
+                                    initial={{ opacity: 0, x: i % 2 === 0 ? 50 : -50 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.6, delay: i * 0.2 }}
+                                    className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group"
+                                >
                                     <div className="flex items-center justify-center w-10 h-10 rounded-full border border-white/10 bg-dark-900 group-hover:border-neon-cyan group-hover:shadow-[0_0_15px_rgba(34,211,238,0.5)] transition-all z-10 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
                                         <div className="w-2 h-2 rounded-full bg-neon-cyan"></div>
                                     </div>
@@ -140,10 +173,10 @@ const About = () => {
                                         <div className="text-xl font-bold text-white mb-2">{step.t}</div>
                                         <div className="text-gray-500 font-medium">{step.d}</div>
                                     </div>
-                                </div>
+                                </motion.div>
                             ))}
                         </div>
-                    </div>
+                    </AnimatedSection>
 
                     {/* CONNECT */}
                     <div className="py-16 text-center">

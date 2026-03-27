@@ -20,6 +20,12 @@ const Footer = () => {
           <div className="space-y-6">
             <Link
               to="/"
+              onClick={(e) => {
+                if (window.location.pathname === '/') {
+                  e.preventDefault();
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+              }}
               className="text-3xl font-black italic tracking-tighter flex items-center gap-2 group"
             >
               <span className="text-white group-hover:text-neon-cyan transition-colors">
@@ -121,6 +127,13 @@ const Footer = () => {
                   ) : (
                     <Link
                       to={item === "Home" ? "/" : `/${item.toLowerCase()}`}
+                      onClick={(e) => {
+                        const path = item === "Home" ? "/" : `/${item.toLowerCase()}`;
+                        if (window.location.pathname === path) {
+                          e.preventDefault();
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }
+                      }}
                       className="text-gray-500 hover:text-neon-cyan font-bold transition-colors flex items-center gap-2 group"
                     >
                       <div className="w-0 h-0.5 bg-neon-cyan group-hover:w-3 transition-all"></div>
@@ -141,6 +154,12 @@ const Footer = () => {
                 <li key={item}>
                   <Link
                     to="/terms"
+                    onClick={(e) => {
+                      if (window.location.pathname === '/terms') {
+                        e.preventDefault();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }
+                    }}
                     className="text-gray-500 hover:text-neon-purple font-bold transition-colors flex items-center gap-2 group"
                   >
                     <div className="w-0 h-0.5 bg-neon-purple group-hover:w-3 transition-all"></div>

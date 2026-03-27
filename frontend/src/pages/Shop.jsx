@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Search, Filter } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { API_BASE, getImageUrl } from '../config/api';
 import PublicLayout from '../components/layout/PublicLayout';
+import AnimatedSection from '../components/common/AnimatedSection';
 
 const Shop = () => {
     const [searchParams] = useSearchParams();
@@ -74,7 +76,12 @@ const Shop = () => {
         <PublicLayout>
             <div className="max-w-[1400px] mx-auto px-4 py-8 min-h-screen">
                 {/* Header / Breadcrumbs */}
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-16">
+                <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6 }}
+                    className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-16"
+                >
                     <div className="flex items-center gap-6">
                         {view === 'products' && (
                             <button
@@ -88,7 +95,7 @@ const Shop = () => {
                             {view === 'categories' ? 'Categories' : <span className="neon-text-gradient">{selectedCategoryName || 'Products'}</span>}
                         </h1>
                     </div>
-                </div>
+                </motion.div>
 
                 {loading ? (
                     <div className="flex justify-center items-center h-96">
@@ -100,9 +107,12 @@ const Shop = () => {
                 ) : view === 'categories' ? (
                     // CATEGORIES GRID
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                        {categories.map((cat) => (
-                            <div
+                        {categories.map((cat, idx) => (
+                            <motion.div
                                 key={cat.category_id}
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ duration: 0.5, delay: idx * 0.1 }}
                                 onClick={() => navigate(`/shop?category=${cat.category_id}`)}
                                 className="group cursor-pointer relative overflow-hidden rounded-lg border border-white/5 hover:border-neon-cyan/30 h-96 transition-all duration-500 shadow-2xl"
                             >
@@ -119,7 +129,7 @@ const Shop = () => {
                                     </p>
                                     <div className="mt-6 w-0 group-hover:w-16 h-1 bg-neon-cyan transition-all duration-500 rounded-full"></div>
                                 </div>
-                            </div>
+                            </motion.div>
                         ))}
                     </div>
                 ) : (
@@ -137,9 +147,12 @@ const Shop = () => {
                         </div>
                     ) : (
                         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-                            {products.map((product) => (
-                                <div
+                            {products.map((product, idx) => (
+                                <motion.div
                                     key={product.product_id}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.5, delay: idx * 0.05 }}
                                     onClick={() => navigate(`/product/${product.product_id}`)}
                                     className="group glass-card rounded-lg overflow-hidden cursor-pointer p-2 transition-all duration-500 hover:-translate-y-4"
                                 >
@@ -167,7 +180,7 @@ const Shop = () => {
                                             )}
                                         </div>
                                     </div>
-                                </div>
+                                </motion.div>
                             ))}
                         </div>
                     )

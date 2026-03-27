@@ -1,5 +1,6 @@
 import React from 'react';
 import PublicLayout from '../components/layout/PublicLayout';
+import { motion } from 'framer-motion';
 import { ShieldCheck, Clock, Ban, Hammer, Database, Truck, AlertTriangle, FileText } from 'lucide-react';
 
 const TermsOfService = () => {
@@ -51,20 +52,28 @@ const TermsOfService = () => {
             <div className="bg-dark-950 min-h-screen pt-32 pb-24">
                 <div className="max-w-4xl mx-auto px-6">
                     {/* Header */}
-                    <div className="text-center mb-20 animate-in fade-in slide-in-from-bottom duration-1000">
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8 }}
+                        className="text-center mb-20 relative z-10"
+                    >
                         <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter uppercase mb-6">
                             Terms & <span className="neon-text-gradient">Conditions</span>
                         </h1>
-                        <p className="text-xl text-gray-500 font-medium">Mobile Hub – Sri Lanka</p>
-                    </div>
+                        <p className="text-xl text-gray-400 font-medium">Mobile Hub – Sri Lanka</p>
+                    </motion.div>
 
                     {/* Main Content */}
                     <div className="space-y-16">
                         {sections.map((section, index) => (
-                            <div
+                            <motion.div
                                 key={index}
-                                className="flex items-start gap-8 animate-in fade-in slide-in-from-bottom"
-                                style={{ animationDelay: `${index * 100}ms` }}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.6, delay: index * 0.1 }}
+                                className="flex items-start gap-8"
                             >
                                 <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 text-neon-cyan">
                                     <section.icon size={24} />
@@ -81,21 +90,27 @@ const TermsOfService = () => {
                                         </p>
                                     </div>
                                 </div>
-                            </div>
+                            </motion.div>
                         ))}
                     </div>
 
                     {/* Important Notice Footer */}
-                    <div className="mt-24 pt-16 border-t border-white/5 text-center animate-in fade-in zoom-in duration-1000 delay-500">
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8 }}
+                        className="mt-24 pt-16 border-t border-white/5 text-center relative z-10"
+                    >
                         <AlertTriangle className="text-neon-purple w-12 h-12 mx-auto mb-6" />
                         <h2 className="text-3xl font-black text-white uppercase tracking-tighter mb-4">Important Notice</h2>
                         <p className="text-gray-300 text-lg font-medium leading-relaxed max-w-2xl mx-auto">
                             No warranty is provided for water damage or physical damage. Customers are advised to use original accessories and keep their purchase invoice safe for future reference.
                         </p>
-                        <p className="mt-8 text-sm text-gray-600 font-bold uppercase tracking-widest">
+                        <p className="mt-8 text-sm text-gray-400 font-bold uppercase tracking-widest">
                             Mobile Hub reserves the right to update these terms at any time.
                         </p>
-                    </div>
+                    </motion.div>
                 </div>
             </div>
         </PublicLayout>

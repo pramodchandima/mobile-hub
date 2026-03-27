@@ -181,6 +181,22 @@ async function createTables() {
       `);
     } catch (err) { /* Ignore if already exists */ }
 
+    // --- Performance Indexes ---
+    try {
+      // Index for product searches
+      await connection.query('CREATE INDEX idx_product_name ON products(product_name)');
+    } catch (err) { /* Ignore if exists */ }
+
+    try {
+      // Index for category filtering
+      await connection.query('CREATE INDEX idx_product_category ON products(category_id)');
+    } catch (err) { /* Ignore if exists */ }
+
+    try {
+      // Index for sorting products by date
+      await connection.query('CREATE INDEX idx_product_date ON products(date_added DESC)');
+    } catch (err) { /* Ignore if exists */ }
+
     // 4. Ensure an Admin user exists
     const [admins] = await connection.query('SELECT * FROM \`admin_users\` LIMIT 1');
     if (admins.length === 0) {
